@@ -1,0 +1,155 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 750px;
+                 background-color: #222222;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#FF0000", "font": {"color": "white"}, "id": "San Pablo", "label": "San Pablo", "shape": "dot", "size": 30, "title": "L\u00ednea: 1"}, {"color": "#FF0000", "font": {"color": "white"}, "id": "Neptuno", "label": "Neptuno", "shape": "dot", "size": 30, "title": "L\u00ednea: 1"}, {"color": "#FF0000", "font": {"color": "white"}, "id": "Pajaritos", "label": "Pajaritos", "shape": "dot", "size": 30, "title": "L\u00ednea: 1"}, {"color": "#FF0000", "font": {"color": "white"}, "id": "Las Rejas", "label": "Las Rejas", "shape": "dot", "size": 30, "title": "L\u00ednea: 1"}, {"color": "#FF0000", "font": {"color": "white"}, "id": "Ecuador", "label": "Ecuador", "shape": "dot", "size": 30, "title": "L\u00ednea: 1"}, {"color": "#FF0000", "font": {"color": "white"}, "id": "San Alberto Hurtado", "label": "San Alberto Hurtado", "shape": "dot", "size": 30, "title": "L\u00ednea: 1"}, {"color": "#FF0000", "font": {"color": "white"}, "id": "U de Santiago", "label": "U de Santiago", "shape": "dot", "size": 30, "title": "L\u00ednea: 1"}, {"color": "#FF0000", "font": {"color": "white"}, "id": "Estacion Central", "label": "Estacion Central", "shape": "dot", "size": 30, "title": "L\u00ednea: 1"}, {"color": "#FF0000", "font": {"color": "white"}, "id": "Union Latinoamericana", "label": "Union Latinoamericana", "shape": "dot", "size": 30, "title": "L\u00ednea: 1"}, {"color": "#FF0000", "font": {"color": "white"}, "id": "Republica", "label": "Republica", "shape": "dot", "size": 30, "title": "L\u00ednea: 1"}, {"color": "#FF0000", "font": {"color": "white"}, "id": "Los Heroes", "label": "Los Heroes", "shape": "dot", "size": 30, "title": "L\u00ednea: 1"}, {"color": "#FF0000", "font": {"color": "white"}, "id": "La Moneda", "label": "La Moneda", "shape": "dot", "size": 30, "title": "L\u00ednea: 1"}, {"color": "#FF0000", "font": {"color": "white"}, "id": "U de Chile", "label": "U de Chile", "shape": "dot", "size": 30, "title": "L\u00ednea: 1"}, {"color": "#FF0000", "font": {"color": "white"}, "id": "Santa Lucia", "label": "Santa Lucia", "shape": "dot", "size": 30, "title": "L\u00ednea: 1"}, {"color": "#FF0000", "font": {"color": "white"}, "id": "U Catolica", "label": "U Catolica", "shape": "dot", "size": 30, "title": "L\u00ednea: 1"}, {"color": "#FF0000", "font": {"color": "white"}, "id": "Baquedano", "label": "Baquedano", "shape": "dot", "size": 30, "title": "L\u00ednea: 1"}, {"color": "#FF0000", "font": {"color": "white"}, "id": "Salvador", "label": "Salvador", "shape": "dot", "size": 30, "title": "L\u00ednea: 1"}, {"color": "#FF0000", "font": {"color": "white"}, "id": "Manuel Montt", "label": "Manuel Montt", "shape": "dot", "size": 30, "title": "L\u00ednea: 1"}, {"color": "#FF0000", "font": {"color": "white"}, "id": "Pedro de Valdivia", "label": "Pedro de Valdivia", "shape": "dot", "size": 30, "title": "L\u00ednea: 1"}, {"color": "#FF0000", "font": {"color": "white"}, "id": "Los Leones", "label": "Los Leones", "shape": "dot", "size": 30, "title": "L\u00ednea: 1"}, {"color": "#FF0000", "font": {"color": "white"}, "id": "Tobalaba", "label": "Tobalaba", "shape": "dot", "size": 30, "title": "L\u00ednea: 1"}, {"color": "#FF0000", "font": {"color": "white"}, "id": "El Golf", "label": "El Golf", "shape": "dot", "size": 30, "title": "L\u00ednea: 1"}, {"color": "#FF0000", "font": {"color": "white"}, "id": "Alcantara", "label": "Alcantara", "shape": "dot", "size": 30, "title": "L\u00ednea: 1"}, {"color": "#FF0000", "font": {"color": "white"}, "id": "Escuela Militar", "label": "Escuela Militar", "shape": "dot", "size": 30, "title": "L\u00ednea: 1"}, {"color": "#FF0000", "font": {"color": "white"}, "id": "Hernando de Magallanes", "label": "Hernando de Magallanes", "shape": "dot", "size": 30, "title": "L\u00ednea: 1"}, {"color": "#FF0000", "font": {"color": "white"}, "id": "Los Dominicos", "label": "Los Dominicos", "shape": "dot", "size": 30, "title": "L\u00ednea: 1"}, {"color": "#FFFF00", "font": {"color": "white"}, "id": "Vespucio Norte", "label": "Vespucio Norte", "shape": "dot", "size": 30, "title": "L\u00ednea: 2"}, {"color": "#FFFF00", "font": {"color": "white"}, "id": "Zapadores", "label": "Zapadores", "shape": "dot", "size": 30, "title": "L\u00ednea: 2"}, {"color": "#FFFF00", "font": {"color": "white"}, "id": "Dorsal", "label": "Dorsal", "shape": "dot", "size": 30, "title": "L\u00ednea: 2"}, {"color": "#FFFF00", "font": {"color": "white"}, "id": "Einstein", "label": "Einstein", "shape": "dot", "size": 30, "title": "L\u00ednea: 2"}, {"color": "#FFFF00", "font": {"color": "white"}, "id": "Cementerios", "label": "Cementerios", "shape": "dot", "size": 30, "title": "L\u00ednea: 2"}, {"color": "#FFFF00", "font": {"color": "white"}, "id": "Cerro Blanco", "label": "Cerro Blanco", "shape": "dot", "size": 30, "title": "L\u00ednea: 2"}, {"color": "#FFFF00", "font": {"color": "white"}, "id": "Patronato", "label": "Patronato", "shape": "dot", "size": 30, "title": "L\u00ednea: 2"}, {"color": "#FFFF00", "font": {"color": "white"}, "id": "Puente Cal y Canto", "label": "Puente Cal y Canto", "shape": "dot", "size": 30, "title": "L\u00ednea: 2"}, {"color": "#FFFF00", "font": {"color": "white"}, "id": "Santa Ana", "label": "Santa Ana", "shape": "dot", "size": 30, "title": "L\u00ednea: 2"}, {"color": "#FFFF00", "font": {"color": "white"}, "id": "Toesca", "label": "Toesca", "shape": "dot", "size": 30, "title": "L\u00ednea: 2"}, {"color": "#FFFF00", "font": {"color": "white"}, "id": "Parque O\u0027Higgins", "label": "Parque O\u0027Higgins", "shape": "dot", "size": 30, "title": "L\u00ednea: 2"}, {"color": "#FFFF00", "font": {"color": "white"}, "id": "Rondizzoni", "label": "Rondizzoni", "shape": "dot", "size": 30, "title": "L\u00ednea: 2"}, {"color": "#FFFF00", "font": {"color": "white"}, "id": "Franklin", "label": "Franklin", "shape": "dot", "size": 30, "title": "L\u00ednea: 2"}, {"color": "#FFFF00", "font": {"color": "white"}, "id": "El Llano", "label": "El Llano", "shape": "dot", "size": 30, "title": "L\u00ednea: 2"}, {"color": "#FFFF00", "font": {"color": "white"}, "id": "San Miguel", "label": "San Miguel", "shape": "dot", "size": 30, "title": "L\u00ednea: 2"}, {"color": "#FFFF00", "font": {"color": "white"}, "id": "Lo Vial", "label": "Lo Vial", "shape": "dot", "size": 30, "title": "L\u00ednea: 2"}, {"color": "#FFFF00", "font": {"color": "white"}, "id": "Departamental", "label": "Departamental", "shape": "dot", "size": 30, "title": "L\u00ednea: 2"}, {"color": "#FFFF00", "font": {"color": "white"}, "id": "Ciudad del Nino", "label": "Ciudad del Nino", "shape": "dot", "size": 30, "title": "L\u00ednea: 2"}, {"color": "#FFFF00", "font": {"color": "white"}, "id": "Lo Ovalle", "label": "Lo Ovalle", "shape": "dot", "size": 30, "title": "L\u00ednea: 2"}, {"color": "#FFFF00", "font": {"color": "white"}, "id": "El Parron", "label": "El Parron", "shape": "dot", "size": 30, "title": "L\u00ednea: 2"}, {"color": "#FFFF00", "font": {"color": "white"}, "id": "La Cisterna", "label": "La Cisterna", "shape": "dot", "size": 30, "title": "L\u00ednea: 2"}, {"color": "#FFFF00", "font": {"color": "white"}, "id": "El Bosque", "label": "El Bosque", "shape": "dot", "size": 30, "title": "L\u00ednea: 2"}, {"color": "#FFFF00", "font": {"color": "white"}, "id": "Observatorio", "label": "Observatorio", "shape": "dot", "size": 30, "title": "L\u00ednea: 2"}, {"color": "#FFFF00", "font": {"color": "white"}, "id": "Copa Lo Martinez", "label": "Copa Lo Martinez", "shape": "dot", "size": 30, "title": "L\u00ednea: 2"}, {"color": "#FFFF00", "font": {"color": "white"}, "id": "Hospital El Pino", "label": "Hospital El Pino", "shape": "dot", "size": 30, "title": "L\u00ednea: 2"}, {"color": "#0000FF", "font": {"color": "white"}, "id": "Cristobal Colon", "label": "Cristobal Colon", "shape": "dot", "size": 30, "title": "L\u00ednea: 4"}, {"color": "#0000FF", "font": {"color": "white"}, "id": "Francisco Bilbao", "label": "Francisco Bilbao", "shape": "dot", "size": 30, "title": "L\u00ednea: 4"}, {"color": "#0000FF", "font": {"color": "white"}, "id": "Principe de Gales", "label": "Principe de Gales", "shape": "dot", "size": 30, "title": "L\u00ednea: 4"}, {"color": "#0000FF", "font": {"color": "white"}, "id": "Simon Bolivar", "label": "Simon Bolivar", "shape": "dot", "size": 30, "title": "L\u00ednea: 4"}, {"color": "#0000FF", "font": {"color": "white"}, "id": "Plaza Egana", "label": "Plaza Egana", "shape": "dot", "size": 30, "title": "L\u00ednea: 4"}, {"color": "#0000FF", "font": {"color": "white"}, "id": "Los Orientales", "label": "Los Orientales", "shape": "dot", "size": 30, "title": "L\u00ednea: 4"}, {"color": "#0000FF", "font": {"color": "white"}, "id": "Grecia", "label": "Grecia", "shape": "dot", "size": 30, "title": "L\u00ednea: 4"}, {"color": "#0000FF", "font": {"color": "white"}, "id": "Los Presidentes", "label": "Los Presidentes", "shape": "dot", "size": 30, "title": "L\u00ednea: 4"}, {"color": "#0000FF", "font": {"color": "white"}, "id": "Quilin", "label": "Quilin", "shape": "dot", "size": 30, "title": "L\u00ednea: 4"}, {"color": "#0000FF", "font": {"color": "white"}, "id": "Las Torres", "label": "Las Torres", "shape": "dot", "size": 30, "title": "L\u00ednea: 4"}, {"color": "#0000FF", "font": {"color": "white"}, "id": "Macul", "label": "Macul", "shape": "dot", "size": 30, "title": "L\u00ednea: 4"}, {"color": "#0000FF", "font": {"color": "white"}, "id": "Vicuna Mackenna", "label": "Vicuna Mackenna", "shape": "dot", "size": 30, "title": "L\u00ednea: 4"}, {"color": "#0000FF", "font": {"color": "white"}, "id": "Vicente Valdes", "label": "Vicente Valdes", "shape": "dot", "size": 30, "title": "L\u00ednea: 4"}, {"color": "#0000FF", "font": {"color": "white"}, "id": "Rojas Magallanes", "label": "Rojas Magallanes", "shape": "dot", "size": 30, "title": "L\u00ednea: 4"}, {"color": "#0000FF", "font": {"color": "white"}, "id": "Trinidad", "label": "Trinidad", "shape": "dot", "size": 30, "title": "L\u00ednea: 4"}, {"color": "#0000FF", "font": {"color": "white"}, "id": "San Jose de la Estrella", "label": "San Jose de la Estrella", "shape": "dot", "size": 30, "title": "L\u00ednea: 4"}, {"color": "#0000FF", "font": {"color": "white"}, "id": "Los Quillayes", "label": "Los Quillayes", "shape": "dot", "size": 30, "title": "L\u00ednea: 4"}, {"color": "#0000FF", "font": {"color": "white"}, "id": "Elisa Correa", "label": "Elisa Correa", "shape": "dot", "size": 30, "title": "L\u00ednea: 4"}, {"color": "#0000FF", "font": {"color": "white"}, "id": "Hospital Sotero del Rio", "label": "Hospital Sotero del Rio", "shape": "dot", "size": 30, "title": "L\u00ednea: 4"}, {"color": "#0000FF", "font": {"color": "white"}, "id": "Protectora de la Infancia", "label": "Protectora de la Infancia", "shape": "dot", "size": 30, "title": "L\u00ednea: 4"}, {"color": "#0000FF", "font": {"color": "white"}, "id": "Las Mercedes", "label": "Las Mercedes", "shape": "dot", "size": 30, "title": "L\u00ednea: 4"}, {"color": "#0000FF", "font": {"color": "white"}, "id": "Plaza de Puente Alto", "label": "Plaza de Puente Alto", "shape": "dot", "size": 30, "title": "L\u00ednea: 4"}, {"color": "#008000", "font": {"color": "white"}, "id": "Plaza de Maipu", "label": "Plaza de Maipu", "shape": "dot", "size": 30, "title": "L\u00ednea: 5"}, {"color": "#008000", "font": {"color": "white"}, "id": "Santiago Bueras", "label": "Santiago Bueras", "shape": "dot", "size": 30, "title": "L\u00ednea: 5"}, {"color": "#008000", "font": {"color": "white"}, "id": "Del Sol", "label": "Del Sol", "shape": "dot", "size": 30, "title": "L\u00ednea: 5"}, {"color": "#008000", "font": {"color": "white"}, "id": "Monte Tabor", "label": "Monte Tabor", "shape": "dot", "size": 30, "title": "L\u00ednea: 5"}, {"color": "#008000", "font": {"color": "white"}, "id": "Las Parcelas", "label": "Las Parcelas", "shape": "dot", "size": 30, "title": "L\u00ednea: 5"}, {"color": "#008000", "font": {"color": "white"}, "id": "Laguna Sur", "label": "Laguna Sur", "shape": "dot", "size": 30, "title": "L\u00ednea: 5"}, {"color": "#008000", "font": {"color": "white"}, "id": "Barrancas", "label": "Barrancas", "shape": "dot", "size": 30, "title": "L\u00ednea: 5"}, {"color": "#008000", "font": {"color": "white"}, "id": "Pudahuel", "label": "Pudahuel", "shape": "dot", "size": 30, "title": "L\u00ednea: 5"}, {"color": "#008000", "font": {"color": "white"}, "id": "Lo Prado", "label": "Lo Prado", "shape": "dot", "size": 30, "title": "L\u00ednea: 5"}, {"color": "#008000", "font": {"color": "white"}, "id": "Blanqueado", "label": "Blanqueado", "shape": "dot", "size": 30, "title": "L\u00ednea: 5"}, {"color": "#008000", "font": {"color": "white"}, "id": "Gruta de Lourdes", "label": "Gruta de Lourdes", "shape": "dot", "size": 30, "title": "L\u00ednea: 5"}, {"color": "#008000", "font": {"color": "white"}, "id": "Quinta Normal", "label": "Quinta Normal", "shape": "dot", "size": 30, "title": "L\u00ednea: 5"}, {"color": "#008000", "font": {"color": "white"}, "id": "Cumming", "label": "Cumming", "shape": "dot", "size": 30, "title": "L\u00ednea: 5"}, {"color": "#008000", "font": {"color": "white"}, "id": "Plaza de Armas", "label": "Plaza de Armas", "shape": "dot", "size": 30, "title": "L\u00ednea: 5"}, {"color": "#008000", "font": {"color": "white"}, "id": "Bellas Artes", "label": "Bellas Artes", "shape": "dot", "size": 30, "title": "L\u00ednea: 5"}, {"color": "#008000", "font": {"color": "white"}, "id": "Parque Bustamante", "label": "Parque Bustamante", "shape": "dot", "size": 30, "title": "L\u00ednea: 5"}, {"color": "#008000", "font": {"color": "white"}, "id": "Santa Isabel", "label": "Santa Isabel", "shape": "dot", "size": 30, "title": "L\u00ednea: 5"}, {"color": "#008000", "font": {"color": "white"}, "id": "Irarrazaval", "label": "Irarrazaval", "shape": "dot", "size": 30, "title": "L\u00ednea: 5"}, {"color": "#008000", "font": {"color": "white"}, "id": "Nuble", "label": "Nuble", "shape": "dot", "size": 30, "title": "L\u00ednea: 5"}, {"color": "#008000", "font": {"color": "white"}, "id": "Rodrigo de Araya", "label": "Rodrigo de Araya", "shape": "dot", "size": 30, "title": "L\u00ednea: 5"}, {"color": "#008000", "font": {"color": "white"}, "id": "Carlos Valdovinos", "label": "Carlos Valdovinos", "shape": "dot", "size": 30, "title": "L\u00ednea: 5"}, {"color": "#008000", "font": {"color": "white"}, "id": "Camino Agricola", "label": "Camino Agricola", "shape": "dot", "size": 30, "title": "L\u00ednea: 5"}, {"color": "#008000", "font": {"color": "white"}, "id": "San Joaquin", "label": "San Joaquin", "shape": "dot", "size": 30, "title": "L\u00ednea: 5"}, {"color": "#008000", "font": {"color": "white"}, "id": "Pedrero", "label": "Pedrero", "shape": "dot", "size": 30, "title": "L\u00ednea: 5"}, {"color": "#008000", "font": {"color": "white"}, "id": "Mirador", "label": "Mirador", "shape": "dot", "size": 30, "title": "L\u00ednea: 5"}, {"color": "#008000", "font": {"color": "white"}, "id": "Bellavista de La Florida", "label": "Bellavista de La Florida", "shape": "dot", "size": 30, "title": "L\u00ednea: 5"}]);
+                  edges = new vis.DataSet([{"color": "#FFFFFF", "from": "San Pablo", "to": "Neptuno"}, {"color": "#FFFFFF", "from": "San Pablo", "to": "Pudahuel"}, {"color": "#FFFFFF", "from": "San Pablo", "to": "Lo Prado"}, {"color": "#FFFFFF", "from": "Neptuno", "to": "Pajaritos"}, {"color": "#FFFFFF", "from": "Pajaritos", "to": "Las Rejas"}, {"color": "#FFFFFF", "from": "Las Rejas", "to": "Ecuador"}, {"color": "#FFFFFF", "from": "Ecuador", "to": "San Alberto Hurtado"}, {"color": "#FFFFFF", "from": "San Alberto Hurtado", "to": "U de Santiago"}, {"color": "#FFFFFF", "from": "U de Santiago", "to": "Estacion Central"}, {"color": "#FFFFFF", "from": "Estacion Central", "to": "Union Latinoamericana"}, {"color": "#FFFFFF", "from": "Union Latinoamericana", "to": "Republica"}, {"color": "#FFFFFF", "from": "Republica", "to": "Los Heroes"}, {"color": "#FFFFFF", "from": "Los Heroes", "to": "La Moneda"}, {"color": "#FFFFFF", "from": "Los Heroes", "to": "Santa Ana"}, {"color": "#FFFFFF", "from": "Los Heroes", "to": "Toesca"}, {"color": "#FFFFFF", "from": "La Moneda", "to": "U de Chile"}, {"color": "#FFFFFF", "from": "U de Chile", "to": "Santa Lucia"}, {"color": "#FFFFFF", "from": "Santa Lucia", "to": "U Catolica"}, {"color": "#FFFFFF", "from": "U Catolica", "to": "Baquedano"}, {"color": "#FFFFFF", "from": "Baquedano", "to": "Salvador"}, {"color": "#FFFFFF", "from": "Baquedano", "to": "Bellas Artes"}, {"color": "#FFFFFF", "from": "Baquedano", "to": "Parque Bustamante"}, {"color": "#FFFFFF", "from": "Salvador", "to": "Manuel Montt"}, {"color": "#FFFFFF", "from": "Manuel Montt", "to": "Pedro de Valdivia"}, {"color": "#FFFFFF", "from": "Pedro de Valdivia", "to": "Los Leones"}, {"color": "#FFFFFF", "from": "Los Leones", "to": "Tobalaba"}, {"color": "#FFFFFF", "from": "Tobalaba", "to": "El Golf"}, {"color": "#FFFFFF", "from": "Tobalaba", "to": "Cristobal Colon"}, {"color": "#FFFFFF", "from": "El Golf", "to": "Alcantara"}, {"color": "#FFFFFF", "from": "Alcantara", "to": "Escuela Militar"}, {"color": "#FFFFFF", "from": "Escuela Militar", "to": "Hernando de Magallanes"}, {"color": "#FFFFFF", "from": "Hernando de Magallanes", "to": "Los Dominicos"}, {"color": "#FFFFFF", "from": "Vespucio Norte", "to": "Zapadores"}, {"color": "#FFFFFF", "from": "Zapadores", "to": "Dorsal"}, {"color": "#FFFFFF", "from": "Dorsal", "to": "Einstein"}, {"color": "#FFFFFF", "from": "Einstein", "to": "Cementerios"}, {"color": "#FFFFFF", "from": "Cementerios", "to": "Cerro Blanco"}, {"color": "#FFFFFF", "from": "Cerro Blanco", "to": "Patronato"}, {"color": "#FFFFFF", "from": "Patronato", "to": "Puente Cal y Canto"}, {"color": "#FFFFFF", "from": "Puente Cal y Canto", "to": "Santa Ana"}, {"color": "#FFFFFF", "from": "Santa Ana", "to": "Cumming"}, {"color": "#FFFFFF", "from": "Santa Ana", "to": "Plaza de Armas"}, {"color": "#FFFFFF", "from": "Toesca", "to": "Parque O\u0027Higgins"}, {"color": "#FFFFFF", "from": "Parque O\u0027Higgins", "to": "Rondizzoni"}, {"color": "#FFFFFF", "from": "Rondizzoni", "to": "Franklin"}, {"color": "#FFFFFF", "from": "Franklin", "to": "El Llano"}, {"color": "#FFFFFF", "from": "El Llano", "to": "San Miguel"}, {"color": "#FFFFFF", "from": "San Miguel", "to": "Lo Vial"}, {"color": "#FFFFFF", "from": "Lo Vial", "to": "Departamental"}, {"color": "#FFFFFF", "from": "Departamental", "to": "Ciudad del Nino"}, {"color": "#FFFFFF", "from": "Ciudad del Nino", "to": "Lo Ovalle"}, {"color": "#FFFFFF", "from": "Lo Ovalle", "to": "El Parron"}, {"color": "#FFFFFF", "from": "El Parron", "to": "La Cisterna"}, {"color": "#FFFFFF", "from": "La Cisterna", "to": "El Bosque"}, {"color": "#FFFFFF", "from": "El Bosque", "to": "Observatorio"}, {"color": "#FFFFFF", "from": "Observatorio", "to": "Copa Lo Martinez"}, {"color": "#FFFFFF", "from": "Copa Lo Martinez", "to": "Hospital El Pino"}, {"color": "#FFFFFF", "from": "Cristobal Colon", "to": "Francisco Bilbao"}, {"color": "#FFFFFF", "from": "Francisco Bilbao", "to": "Principe de Gales"}, {"color": "#FFFFFF", "from": "Principe de Gales", "to": "Simon Bolivar"}, {"color": "#FFFFFF", "from": "Simon Bolivar", "to": "Plaza Egana"}, {"color": "#FFFFFF", "from": "Plaza Egana", "to": "Los Orientales"}, {"color": "#FFFFFF", "from": "Los Orientales", "to": "Grecia"}, {"color": "#FFFFFF", "from": "Grecia", "to": "Los Presidentes"}, {"color": "#FFFFFF", "from": "Los Presidentes", "to": "Quilin"}, {"color": "#FFFFFF", "from": "Quilin", "to": "Las Torres"}, {"color": "#FFFFFF", "from": "Las Torres", "to": "Macul"}, {"color": "#FFFFFF", "from": "Macul", "to": "Vicuna Mackenna"}, {"color": "#FFFFFF", "from": "Vicuna Mackenna", "to": "Vicente Valdes"}, {"color": "#FFFFFF", "from": "Vicente Valdes", "to": "Rojas Magallanes"}, {"color": "#FFFFFF", "from": "Vicente Valdes", "to": "Bellavista de La Florida"}, {"color": "#FFFFFF", "from": "Rojas Magallanes", "to": "Trinidad"}, {"color": "#FFFFFF", "from": "Trinidad", "to": "San Jose de la Estrella"}, {"color": "#FFFFFF", "from": "San Jose de la Estrella", "to": "Los Quillayes"}, {"color": "#FFFFFF", "from": "Los Quillayes", "to": "Elisa Correa"}, {"color": "#FFFFFF", "from": "Elisa Correa", "to": "Hospital Sotero del Rio"}, {"color": "#FFFFFF", "from": "Hospital Sotero del Rio", "to": "Protectora de la Infancia"}, {"color": "#FFFFFF", "from": "Protectora de la Infancia", "to": "Las Mercedes"}, {"color": "#FFFFFF", "from": "Las Mercedes", "to": "Plaza de Puente Alto"}, {"color": "#FFFFFF", "from": "Plaza de Maipu", "to": "Santiago Bueras"}, {"color": "#FFFFFF", "from": "Santiago Bueras", "to": "Del Sol"}, {"color": "#FFFFFF", "from": "Del Sol", "to": "Monte Tabor"}, {"color": "#FFFFFF", "from": "Monte Tabor", "to": "Las Parcelas"}, {"color": "#FFFFFF", "from": "Las Parcelas", "to": "Laguna Sur"}, {"color": "#FFFFFF", "from": "Laguna Sur", "to": "Barrancas"}, {"color": "#FFFFFF", "from": "Barrancas", "to": "Pudahuel"}, {"color": "#FFFFFF", "from": "Lo Prado", "to": "Blanqueado"}, {"color": "#FFFFFF", "from": "Blanqueado", "to": "Gruta de Lourdes"}, {"color": "#FFFFFF", "from": "Gruta de Lourdes", "to": "Quinta Normal"}, {"color": "#FFFFFF", "from": "Quinta Normal", "to": "Cumming"}, {"color": "#FFFFFF", "from": "Plaza de Armas", "to": "Bellas Artes"}, {"color": "#FFFFFF", "from": "Parque Bustamante", "to": "Santa Isabel"}, {"color": "#FFFFFF", "from": "Santa Isabel", "to": "Irarrazaval"}, {"color": "#FFFFFF", "from": "Irarrazaval", "to": "Nuble"}, {"color": "#FFFFFF", "from": "Nuble", "to": "Rodrigo de Araya"}, {"color": "#FFFFFF", "from": "Rodrigo de Araya", "to": "Carlos Valdovinos"}, {"color": "#FFFFFF", "from": "Carlos Valdovinos", "to": "Camino Agricola"}, {"color": "#FFFFFF", "from": "Camino Agricola", "to": "San Joaquin"}, {"color": "#FFFFFF", "from": "San Joaquin", "to": "Pedrero"}, {"color": "#FFFFFF", "from": "Pedrero", "to": "Mirador"}, {"color": "#FFFFFF", "from": "Mirador", "to": "Bellavista de La Florida"}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": false,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
